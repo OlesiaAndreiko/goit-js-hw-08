@@ -1,31 +1,42 @@
 import throttle from 'lodash.throttle';
 
-const STORAGE_KEY = 'feedback'
+const LOCALSTORAGE_KEY = 'feedback-form-state'
+
+const userData = {
+    'email' : '',
+    'message' : ''
+}
 
 const refs = {
 form : document.querySelector('.feedback-form'),
-textarea : document.querySelector('.feedback-form textarea')
+email : document.querySelector('.feedback-form input'),
+message : document.querySelector('.feedback-form textarea')
 };
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.textarea.addEventListener('input', throttle(onTextareaInput, 500));
+refs.message.addEventListener('input', throttle(onSetData, 500));
+refs.email.addEventListener('input', throttle(onSetData, 500));
 
-onPopulateTextarea()
+onGetData()
 
-function onTextareaInput(evt) {
-    const message = evt.target.value;
-    localStorage.setItem(STORAGE_KEY, message);
+function onSetData(evt) {
+    userData.email = refs.email.value
+    userData.message = refs.message.value
+    localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(userData))
 }
 
 function onFormSubmit(evt) {
     evt.preventDefault();
-    evt.currentTarget.reset();
-    localStorage.removeItem(STORAGE_KEY)
+    evt.target.reset();
+    localStorage.removeItem(LOCALSTORAGE_KEY)
 }
 
-function onPopulateTextarea() {
-   const savedMessage = localStorage.getItem(STORAGE_KEY);
-   if(savedMessage) {
-    refs.textarea.value = savedMessage;
-   }
+function onGetData() {
+    const savedData  = localStorage.getItem(LOCALSTORAGE_KEY)
+    const parseData = JSON.parse(savedData)
+
+    if(parseData) {
+        refs.email.value = parseData.email || ''
+        refs.message.value = parseData.message || ''
+        }
 }
