@@ -8,7 +8,7 @@ textarea : document.querySelector('.feedback-form textarea')
 };
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.textarea.addEventListener('input', throttle(onTextareaInput), 3000);
+refs.textarea.addEventListener('input', throttle(onTextareaInput, 500));
 
 onPopulateTextarea()
 
