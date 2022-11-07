@@ -6,21 +6,19 @@ const iframe = document.querySelector('#vimeo-player');
 const player = new Player(iframe);
 
 player.on('timeupdate', throttle(onPlay, 1000));
-
-try {
-  const playbackTime = Number(localStorage.getItem(TIME))
-  player.setCurrentTime(playbackTime)  
-} catch (error) {
-  console.log(error.name)
-}
+player.setCurrentTime(Number(localStorage.getItem(TIME)))
 
 function onPlay(data){
   const currentTime = data.seconds
   localStorage.setItem(TIME, currentTime)
 }
 
-
-
+// try {
+//   const playbackTime = Number(localStorage.getItem(TIME))
+//   player.setCurrentTime(playbackTime)  
+// } catch (error) {
+//   console.log(error.name)
+// }
 
 // player.setCurrentTime(savedTime).then(function(seconds) {
 //   // seconds = Number(localStorage.getItem(TIME))
@@ -38,4 +36,3 @@ function onPlay(data){
 //           break;
 //   }
 // });
-
